@@ -1,5 +1,5 @@
 [submodule "vendor/detours/Detours"]
-	path = mod/vendor/detours/Detours
+	path = vendor/detours/Detours
 	url = https://github.com/microsoft/Detours.git
 [submodule "rangers-sdk"]
 	path = sdks/rangers-sdk
