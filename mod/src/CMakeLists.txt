@@ -1,8 +1,8 @@
-target_precompile_headers(mod
+target_precompile_headers(${MOD_TARGET}
     PRIVATE
         Pch.h
 )
-target_sources(mod
+target_sources(${MOD_TARGET}
     PRIVATE
         version.rc
         DllMain.cpp
