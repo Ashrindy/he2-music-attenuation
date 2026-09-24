@@ -25,11 +25,15 @@
 #ifdef PROJECT_TARGET_SDK_rangers
 #include <rangers-sdk.h>
 #define he2sdk rangerssdk
+#define MUSIC_CATEGORY 0
+#define MUTE_MUSIC_CATEGORY 0
 #endif
 
 #ifdef PROJECT_TARGET_SDK_miller
 #include <miller-sdk.h>
 #define he2sdk millersdk
+#define MUSIC_CATEGORY 0
+#define MUTE_MUSIC_CATEGORY 1
 #endif
 
 #include <utilities/Helpers.h>

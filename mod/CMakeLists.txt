@@ -13,7 +13,7 @@ cmake_path(APPEND MODS_FOLDER "${PROJECT_NAME}" OUTPUT_VARIABLE MOD_FOLDER)
 cmake_path(APPEND MODS_SUBFOLDER "${PROJECT_NAME}" OUTPUT_VARIABLE MOD_FOLDER_RELATIVE)
 
 add_library(${MOD_TARGET} SHARED)
-target_link_libraries(${MOD_TARGET} PRIVATE ${TARGET_SDK}-sdk detours)
+target_link_libraries(${MOD_TARGET} PRIVATE ${TARGET_SDK}-sdk detours windowsapp)
 target_compile_features(${MOD_TARGET} PRIVATE cxx_std_20)
 target_compile_options(${MOD_TARGET} PRIVATE /permissive-)
 target_compile_definitions(${MOD_TARGET}
