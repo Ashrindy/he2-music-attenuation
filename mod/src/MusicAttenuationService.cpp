@@ -80,11 +80,19 @@ const hh::game::GameServiceClass* MusicAttenuationService::GetClass() {
     return &gameServiceClass;
 }
 
+#ifndef PROJECT_TARGET_SDK_wars
 MusicAttenuationService::MusicAttenuationService(csl::fnd::IAllocator* allocator) : hh::game::GameService{ allocator } {}
 
 hh::game::GameService* MusicAttenuationService::Create(csl::fnd::IAllocator* allocator) {
     return new (allocator) MusicAttenuationService{ allocator };
 }
+#else
+MusicAttenuationService::MusicAttenuationService() {}
+
+hh::game::GameService* MusicAttenuationService::Create(csl::fnd::IAllocator* allocator) {
+    return new (allocator) MusicAttenuationService{};
+}
+#endif
 
 const hh::game::GameServiceClass MusicAttenuationService::gameServiceClass {
     "MusicAttenuationService",
@@ -104,20 +112,33 @@ int MusicAttenuationThreadImpl(void* userData) {
 }
 
 void MusicAttenuationService::OnAddedToGame() {
+#ifndef PROJECT_TARGET_SDK_wars
     gameManager->AddGameUpdateListener(this);
+#endif
     thread.Create(0, &MusicAttenuationThreadImpl, this, 0x400, 0, "MusicAttenuationThread");
 }
 
 void MusicAttenuationService::OnRemovedFromGame() {
+#ifndef PROJECT_TARGET_SDK_wars
     gameManager->RemoveGameUpdateListener(this);
+#endif
     stopThread = true;
     thread.Exit();
 }
 
+// I hope this can be addressed, because this entire function looks like a mess..
+#ifndef PROJECT_TARGET_SDK_wars
 void MusicAttenuationService::PreGameUpdateCallback(hh::game::GameManager* gameManager, const hh::fnd::SUpdateInfo& updateInfo) {
+#else
+void MusicAttenuationService::Update(const hh::fnd::SUpdateInfo& updateInfo) {
+#endif
     auto* sndPlayer = hh::snd::SoundPlayer::GetInstance();
     if (sndPlayer) {
+#ifndef PROJECT_TARGET_SDK_wars
         float volume = sndPlayer->GetMasterVolume(MUSIC_CATEGORY);
+#else
+        float volume = sndPlayer->GetMasterVolume(0);
+#endif
         auto time = 1.0f - expf(2.5f * -updateInfo.deltaTime);
         if (!isActive) {
             // I, uhh.. I don't even know.
@@ -131,6 +152,7 @@ void MusicAttenuationService::PreGameUpdateCallback(hh::game::GameManager* gameM
             else
             {
 label_savedvolume:
+#ifndef PROJECT_TARGET_SDK_wars
                 if (auto* saveMgr = gameManager->GetService<app::save::SaveManager>()) {
 #ifdef PROJECT_TARGET_SDK_rangers
                     auto optionAcc = saveMgr->GetOptionAccessor();
@@ -140,12 +162,17 @@ label_savedvolume:
                     auto audioAcc = optionAcc.GetOptionAudioAc();
                     volume = std::lerp(volume, audioAcc.GetMusicVolume(), time);
                 }
+#else
+                auto* audioData = app::SaveData::GetAudioSettingsData();
+                volume = std::lerp(volume, audioData->m_musicVolume * audioData->m_masterVolume, time);
+#endif
             }
         }
         sndPlayer->SetMasterVolume(MUSIC_CATEGORY, volume);
     }
 }
 
+// This function could be just inlined, and the compiler probably does that. Originally was meant for more, but in the end, its full potential went unused.
 void MusicAttenuationService::SetActive(bool active) {
     isActive = active;
 }

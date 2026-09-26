@@ -1,6 +1,8 @@
 #include "OptionsBootstrap.h"
 #include "MusicAttenuationService.h"
 
+// The game likes to leave in "reserved" fields in the save data, we can take use of those for our own custom data. Thank you game.
+
 static const char* names[]{
 	"OPTION_SOUND_BGM",
 	"OPTION_SOUND_SE",
@@ -87,7 +89,7 @@ HOOK(void, __fastcall, InitializeSoundConfig, 0x14B294590, hh::game::GameService
 	}
 }
 
-// Messy solution to loading the pacs, but ST does this too with RichPresence (probably because Steam can be in a different language compared to the game..)
+// Messy solution for loading the pacs, but the game does this too with RichPresence (probably because Steam can be in a different language compared to the game..)
 FUNCTION_PTR(const char*, __fastcall, GetLangID, 0x14C3BA7F0, char);
 
 HOOK(int, __fastcall, sub_14011E590, 0x14011E590, int64_t self, int a2) {

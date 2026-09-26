@@ -47,7 +47,7 @@ file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/archives")
 
 add_subdirectory(vendor EXCLUDE_FROM_ALL)
 
-foreach(TARGET_SDK rangers miller)
+foreach(TARGET_SDK wars rangers miller)
     if(DEFINED ENV{${SDK_VAR_${TARGET_SDK}}})
         message("${SDK_VAR_${TARGET_SDK}} environment variable found. Using this version instead of the local submodule.")
         cmake_path(SET SDK_PATH NORMALIZE $ENV{${SDK_VAR_${TARGET_SDK}}})

@@ -1,7 +1,7 @@
 # he2-music-attenuation
 
 An HE2 mod, that adds in the feature of silencing in-game music when external media is playing!
-Some games (Shadow Generations) support toggling said feature off and on in the in-game settings.
+Most games (Sonic Forces, Shadow Generations) support toggling said feature off and on in the in-game settings.
 
 ## Credits
 

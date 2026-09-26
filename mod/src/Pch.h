@@ -15,6 +15,8 @@
 #ifdef PROJECT_TARGET_SDK_wars
 #include <wars-sdk.h>
 #define he2sdk warssdk
+#define MUSIC_CATEGORY 0x100
+#define MUTE_MUSIC_CATEGORY 0
 #endif
 
 #ifdef PROJECT_TARGET_SDK_hite
@@ -37,3 +39,11 @@
 #endif
 
 #include <utilities/Helpers.h>
+
+template<typename T>
+void WriteProtected(uintptr_t address, T value) {
+	DWORD oldProtect;
+	VirtualProtect(reinterpret_cast<void*>(address), sizeof(T), PAGE_EXECUTE_READWRITE, &oldProtect);
+	*reinterpret_cast<T*>(address) = value;
+	VirtualProtect(reinterpret_cast<void*>(address), sizeof(T), oldProtect, &oldProtect);
+}
