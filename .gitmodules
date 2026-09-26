@@ -3,13 +3,15 @@
 	url = https://github.com/microsoft/Detours.git
 [submodule "rangers-sdk"]
 	path = sdks/rangers-sdk
-	url = https://github.com/he2-sdk/rangers-sdk.git
+	url = https://github.com/Ashrindy/rangers-sdk.git
+	branch = my-ucsl
 [submodule "sdks/miller-sdk"]
 	path = sdks/miller-sdk
-	url = https://github.com/HE2-SDK/miller-sdk.git
+	url = https://github.com/Ashrindy/miller-sdk.git
 [submodule "sdks/wars-sdk"]
 	path = sdks/wars-sdk
-	url = https://github.com/HE2-SDK/wars-sdk.git
+	url = https://github.com/Ashrindy/wars-sdk.git
+	branch = my-ucsl
 [submodule "sdks/hite-sdk"]
 	path = sdks/hite-sdk
 	url = https://github.com/HE2-SDK/hite-sdk.git
