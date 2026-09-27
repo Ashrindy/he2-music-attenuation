@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
-project(he2-music-attenuation VERSION 0.0.1
+project(he2-music-attenuation VERSION 0.0.2
                  DESCRIPTION "he2-music-attenuation"
                  LANGUAGES CXX)
 

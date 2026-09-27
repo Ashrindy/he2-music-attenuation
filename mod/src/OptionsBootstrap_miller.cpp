@@ -62,11 +62,9 @@ HOOK(void, __fastcall, UIOptionSoundConfig_OnValueChanged, 0x1407A1620, app::ui:
 	}
 }
 
-HOOK(int, __fastcall, UIOptionSoundConfig_GetOptionCount, 0x1401C4610, app::ui::UIOptionSoundConfig* self) {
+int UIOptionSoundConfig_GetOptionCount(app::ui::UIOptionSoundConfig* self) {
 	return newOptionCount;
 }
-
-FUNCTION_PTR(int, __fastcall, UIOptionSoundConfig_GetOptionCountPTR, 0x1401C4610);
 
 HOOK(int, __fastcall, UIOptionSoundConfig_GetOptionID, 0x1407A1760, app::ui::UIOptionSoundConfig* self, int optionIndex) {
 	if (optionIndex > newLastOptionIndex)
@@ -107,6 +105,8 @@ HOOK(int, __fastcall, sub_14011E590, 0x14011E590, int64_t self, int a2) {
 
 void bootstrapOptions() {
 	INSTALL_HOOK(sub_14011E590);
+	size_t UIOptionSoundConfig_GetOptionCountPTRptr = *(size_t*)0x141278750;
+	FUNCTION_PTR(int, __fastcall, UIOptionSoundConfig_GetOptionCountPTR, UIOptionSoundConfig_GetOptionCountPTRptr);
 	originalOptionCount = UIOptionSoundConfig_GetOptionCountPTR();
 	newOptionCount = originalOptionCount + 1;
 	originalLastOptionIndex = originalOptionCount - 1;
@@ -117,7 +117,9 @@ void bootstrapOptions() {
 	INSTALL_HOOK(UIOptionSoundConfig_UOC_UnkFunc21);
 	INSTALL_HOOK(UIOptionSoundConfig_OnValueChanged);
 	INSTALL_HOOK(UIOptionSoundConfig_IsIndexInRange);
-	INSTALL_HOOK(UIOptionSoundConfig_GetOptionCount);
+	// The reason for this, is because of how generic the original function is, hooking onto it causes a chain of reactions, as it's used in other places too.
+	// So instead, we simply overwrite the vftable with our custom function.
+	WriteProtected<size_t>(0x141278750, (size_t)&UIOptionSoundConfig_GetOptionCount);
 	INSTALL_HOOK(UIOptionSoundConfig_GetOptionID);
 	INSTALL_HOOK(UIOptionSoundConfig_GetOptionName);
 }
